@@ -7,40 +7,41 @@
 </head>
 <body>
 
-     <label for="Id" class="inputText">
-                    <h6>id Employee</h6>
-                </label>
-                <input type="text" id="Id" class="inputContain" placeholder="Ej: cedula">
+  <!-- ID Cliente (normalmente lo genera la base de datos, por eso puede ser readonly o no visible) -->
+<label for="idClientes" class="inputText">
+    <h6>ID Cliente</h6>
+</label>
+<input type="text" id="idClientes" class="inputContain" placeholder="Ej: 1" readonly>
+
+<!-- Nombre -->
+<label for="nombre" class="inputText">
+    <h6>Nombre</h6>
+</label>
+<input type="text" id="nombre" class="inputContain" placeholder="Ej: Juan Pérez">
+
+<!-- Correo -->
+<label for="correo" class="inputText">
+    <h6>Correo</h6>
+</label>
+<input type="email" id="correo" class="inputContain" placeholder="Ej: ejemplo@correo.com">
+
+<!-- Teléfono -->
+<label for="telefono" class="inputText">
+    <h6>Teléfono</h6>
+</label>
+<input type="tel" id="telefono" class="inputContain" placeholder="Ej: 3001234567">
+
+<!-- Fecha de Registro -->
+<label for="fechaRegistro" class="inputText">
+    <h6>Fecha de Registro</h6>
+</label>
+<input type="date" id="fechaRegistro" class="inputContain">
 
 
-                <label for="SignIn" class="inputText">
-                    <h6>Name</h6>
-                </label>
-                <input type="text" id="SignIn" class="inputContain" placeholder="Ej: memo">
-
-
-                <label for="address" class="inputText">
-                    <h6>Email</h6>
-                </label>
-                <input type="text" id="address" class="inputContain" placeholder="Ej: carrera septima 123">
-
-
-                <label for="password" class="inputText">
-                    <h6>Password</h6>
-                </label>
-                <input type="text" id="password" class="inputContain" placeholder="Ej: 123456789">
-
-
-                <label for="passwordRepeat" class="inputText">
-                    <h6>VerifyPassword</h6>
-                </label>
-                <input type="text" id="passwordRepeat" class="inputContain" placeholder="Ej: 123456789">
-
-            </div>
             <a id="SignInButton" class="ButtonGeneral">
-                <h6>Register</h6>
+                <h6>Set Data</h6>
             </a>  
 
-<script src="/frontend/SignIn.js"></script>
+<script src="./JS/PartSql.js"></script>
 </body>
 </html>
