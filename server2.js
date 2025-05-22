@@ -3,8 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { FirestoreService } from './nosql/firestore_service.js';
-import SqlConnection from './sql/connection.js';
+import { FirestoreService } from './Modules/NoSQL/firestore_service.js';
+import SqlConnection from './Modules/SQL/connection.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
