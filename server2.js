@@ -17,7 +17,7 @@ app.post('/example/sql', async (req, res) => {
   try {
     await db.connectToDb();
 await db.query(
-  "INSERT INTO employee (Nombre, correo, Telefono, FechaRegistro) VALUES (?, ?, ?, ?)",
+  "INSERT INTO clientes (Nombre, correo, Telefono, FechaRegistro) VALUES (?, ?, ?, ?)",
   [ Nombre, Correo, Telefono, FechaRegistro]
 );
     res.status(200).send("User registered.");

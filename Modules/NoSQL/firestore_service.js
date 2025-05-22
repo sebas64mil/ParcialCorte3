@@ -1,20 +1,13 @@
 import { db } from '../../Modules/NoSQL/firebase_init.js';
-import {
-  collection,
-  getDocs,
-  getDoc,
-  addDoc,
-  setDoc,
-  doc
-} from 'firebase-admin/firestore';
+
 
 export class FirestoreService {
   constructor(collectionName) {
-    this.collectionRef = collection(db, collectionName);
+    this.collectionRef = db.collection(collectionName);
   }
 
   async getAllDocuments() {
-    const snapshot = await getDocs(this.collectionRef);
+    const snapshot = await this.collectionRef.get();
     const data = [];
     snapshot.forEach((doc) => {
       data.push({ id: doc.id, ...doc.data() });
@@ -23,25 +16,23 @@ export class FirestoreService {
   }
 
   async getDocumentById(id) {
-    const docRef = doc(this.collectionRef, id);
-    const snapshot = await getDoc(docRef);
-  
-    if (snapshot.exists()) {
+    const docRef = this.collectionRef.doc(id);
+    const snapshot = await docRef.get();
+
+    if (snapshot.exists) {
       return { id: snapshot.id, ...snapshot.data() };
     } else {
-      return null; 
+      return null;
     }
   }
 
-  async PostDocument(customId, dataObject) {
+  async postDocument(customId, dataObject) {
     try {
-      console.log(customId, dataObject);
-      const docRef = doc(this.collectionRef, customId.toString());
-      await setDoc(docRef, dataObject);
+      const docRef = this.collectionRef.doc(customId.toString());
+      await docRef.set(dataObject);
       console.log("Documento creado con ID:", customId);
     } catch (e) {
       console.error("Error al crear el documento:", e);
     }
   }
-  
 }
