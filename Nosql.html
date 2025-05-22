@@ -7,5 +7,94 @@
 </head>
 <body>
     
+
+  <div>
+        <h1>Connected to Firestore</h1>
+        <button id="loadDataBtn">Show all documents in console</button>
+    </div>
+
+    <div>
+        <h1>Add student to the database</h1>
+
+        <label for="id">Student Code:</label>
+        <input type="text" id="id" placeholder="Ej: 30003625"><br><br>
+        
+        <label for="name">name:</label>
+        <input type="text" id="name" placeholder="Ej: memo"><br><br>
+
+        <label for="carera">carrera:</label>
+        <input type="text" id="carrera" placeholder="Ej: multi"><br><br>
+
+        <label for="edad">edad:</label>
+        <input type="number" min="0"  id="edad" placeholder="Ej: 18"><br><br>
+
+        <button id="addDocBtn">Add Student</button>
+    </div>
+    <div>
+        <h1>Get student by id</h1>
+
+        <label for="getid">Student Code:</label>
+        <input type="text" id="getid" placeholder="Ej: 30003625"><br><br>
+
+        <button id="getDocBtn">Get Student</button>
+    </div>
+
+
+     <script type="module">
+        import { FirestoreService } from './Modules/NoSQL/firestore_service.js';
+
+
+
+        const firestore = new FirestoreService("estudiantes");
+
+
+        document.getElementById("loadDataBtn").addEventListener("click", async () => {
+            const docs = await firestore.getAllDocuments();
+            const docwithId = await firestore.getDocumentById("001"); 
+            console.log("Obtained Docs:", docs);
+            console.log("Obtained Doc with ID:", docwithId);
+            docs.forEach(doc => {
+                console.log("Document ID:", doc.id);
+            });
+        })
+
+        document.getElementById("addDocBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id").value.trim();
+            const name = document.getElementById("name").value.trim();
+            const carrera = document.getElementById("carrera").value.trim();
+            const edadValue = document.getElementById("edad").value;
+            const edad = edadValue ? parseInt(edadValue) : null;
+
+           if (!id || !name || !carrera) {
+                alert("Fill in the required fields: Document ID, First Name and Last Name.");
+                return;
+            }
+
+            const data = {
+                carrera,
+                edad: isNaN(edad) ? null : edad ,
+                id,                    
+                name,
+            };
+
+
+            await firestore.PostDocument(id, data);
+        });
+
+        document.getElementById("getDocBtn").addEventListener("click", async () => {
+            const id = document.getElementById("getid").value.trim();
+
+            if (!id) {
+                alert("The student id is needed");
+                return;
+            }
+            
+            
+            const doc = await firestore.getDocumentById(id);
+
+            console.log("name"+doc.name);
+            console.log(doc);
+        });
+    </script>
 </body>
 </html>

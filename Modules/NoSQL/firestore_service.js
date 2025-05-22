@@ -1,5 +1,5 @@
 import { db } from './firebase_init.js';
-import { collection, getDocs, getDoc, addDoc, setDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 export class FirestoreService {
   constructor(collectionName) {
