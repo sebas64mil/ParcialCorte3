@@ -3,7 +3,7 @@ const config = {
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'mydb'
+    database: 'parcial'
 };
 
 class SqlConnection{
