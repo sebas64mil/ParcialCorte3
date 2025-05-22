@@ -1,68 +1,25 @@
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { FirestoreService } from './Modules/NoSQL/firestore_service.js';
-import SqlConnection from './Modules/SQL/connection.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const express = require('express');
+const path = require('path');
+const FirestoreService = require('./Modules/NoSQL/firestore_service.js');
+const FirestoreQuery = require('./Modules/NoSQL/firestore_query.js');
+const SqlService = require('./Modules/SQL/connection.js');
 
 const app = express();
-const port = 3000; 
+const port = 3000;
 
-const imagesService = new FirestoreService("LoginApp");
-
-// Middleware básico
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname)));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname))); // Sirve index.html y PartSql.js desde la raíz
 
-// Configuración de Multer para subir imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, 'uploads'));
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueName);
-  }
-});
-const upload = multer({ storage });
-
-// POST /upload — subir imagen y guardar nombre en Firestore
-app.post('/upload', upload.single('image'), async (req, res) => {
-  if (!req.file) return res.status(400).send('No file uploaded.');
-
-  try {
-    await imagesService.PostDocument(req.file.filename, {
-      filename: req.file.filename,
-      uploadedAt: new Date().toISOString()
-    });
-    res.send(`Image uploaded: ${req.file.filename}`);
-  } catch (error) {
-    console.error("Firestore error:", error);
-    res.status(500).send('Error saving image info.');
-  }
-});
-
-// POST /register — insertar usuario en base de datos SQL
-app.post('/register', async (req, res) => { 
-  // req lo que recibe el cliente
-  // res lo que devuelve el servidor
-  const { idCliente, Nombre, Correo, Telefono,FechaRegistro } = req.body;
-  if (!idCliente || !Telefono || !Nombre || !Correo || !FechaRegistro) return res.status(400).send("Missing fields.");
-
-  const db = new SqlConnection();
-
+/** SQL: Ejemplo de inserción **/
+app.post('/example/sql', async (req, res) => {
+  const { Nombre, Correo, Telefono, FechaRegistro } = req.body;
+  const db = new SqlService();
   try {
     await db.connectToDb();
-    await db.query(
-      "INSERT INTO employee (idClientes, Nombre, correo, Telefono, FechaRegistro) VALUES (?, ?, ?, ?, ?)",
-      [idCliente, Nombre, Correo, Telefono, FechaRegistro]
-    );
+await db.query(
+  "INSERT INTO employee (Nombre, correo, Telefono, FechaRegistro) VALUES (?, ?, ?, ?)",
+  [ Nombre, Correo, Telefono, FechaRegistro]
+);
     res.status(200).send("User registered.");
   } catch (err) {
     console.error("SQL error:", err);
@@ -72,27 +29,17 @@ app.post('/register', async (req, res) => {
   }
 });
 
-//////////////////////////////////////////////////////////////////////////////////////
+/** Firestore **/
+app.post('/example/firestore', async (req, res) => {
+  const { id, ...data } = req.body;
+  const firestore = new FirestoreService('users');
 
-// GET /user/:username — consultar usuario en base de datos SQL
-app.get('/user/:username', async (req, res) => {
-  const db = new SqlConnection();
   try {
-    await db.connectToDb();
-    const result = await db.query(
-      "SELECT * FROM employee WHERE adress = ?",
-      [req.params.username]
-    );
-    await db.closeConnection();
-
-    if (result.length === 0) {
-      res.status(404).send("User not found.");
-    } else {
-      res.status(200).json(result[0]);
-    }
+    await firestore.postDocument(id, data);
+    res.status(200).send("Document added to Firestore.");
   } catch (err) {
-    console.error("SQL error:", err);
-    res.status(500).send("Error retrieving user.");
+    console.error("Firestore error:", err);
+    res.status(500).send("Error adding document.");
   }
 });
 

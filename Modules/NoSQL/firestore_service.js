@@ -1,5 +1,12 @@
-import { db } from './firebase_init.js';
-import { collection, getDocs, getDoc, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { db } from '../../Modules/NoSQL/firebase_init.js';
+import {
+  collection,
+  getDocs,
+  getDoc,
+  addDoc,
+  setDoc,
+  doc
+} from 'firebase-admin/firestore';
 
 export class FirestoreService {
   constructor(collectionName) {

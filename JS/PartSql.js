@@ -1,26 +1,24 @@
 // Registrar usuario
 document.getElementById("SignInButton").addEventListener("click", () => {
-    const idCliente = document.getElementById("idClientes").value;
     const Nombre = document.getElementById("nombre").value;
     const Correo = document.getElementById("correo").value;
     const Telefono = document.getElementById("telefono").value;
     const FechaRegistro = document.getElementById("fechaRegistro").value;
 
 
-    if (!idCliente || !Nombre || !Correo || !Telefono || !FechaRegistro) {
+    if ( !Nombre || !Correo || !Telefono || !FechaRegistro) {
         alert("All fields are required.");
         return;
     }
 
-    const data = {
-        idCliente : idCliente ,
-        Nombre: Nombre,
-        Correo: Correo,
-        Telefono: Telefono,
-        FechaRegistro: FechaRegistro
-    };
+const data = {
+  Nombre: Nombre,
+  Correo: Correo,
+  Telefono: Telefono,
+  FechaRegistro: FechaRegistro
+};
 
-    fetch("http://localhost:3000/register", {
+    fetch("http://localhost:3000/example/sql", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -39,6 +37,7 @@ document.getElementById("SignInButton").addEventListener("click", () => {
             document.getElementById("nombre").value = "";
             document.getElementById("correo").value = "";
             document.getElementById("telefono").value = "";
+            document.getElementById("fechaRegistro").value = "";
         })
         .catch(error => {
             console.error("Error:", error);

@@ -1,14 +1,14 @@
-import { db } from './firebase_init.js';
+import { db } from '../../Modules/NoSQL/firebase_init.js';
 import {
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    startAt,
-    endAt,
-    getDocs
-} from 'firebase/firestore';
+  collection,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAt,
+  endAt,
+  getDocs
+} from 'firebase-admin/firestore';
 
 export class FirestoreQuery {
     constructor(collectionName) {
