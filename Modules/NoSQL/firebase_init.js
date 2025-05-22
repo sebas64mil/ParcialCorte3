@@ -1,20 +1,16 @@
-import { initializeApp } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyANIYCtkrM7UcmFJK4AunyERlGKiHN8l1k",
   authDomain: "voltrush-c1ee8.firebaseapp.com",
   projectId: "voltrush-c1ee8",
-  storageBucket: "voltrush-c1ee8.firebasestorage.app",
+  storageBucket: "voltrush-c1ee8.appspot.com",
   messagingSenderId: "902027158636",
   appId: "1:902027158636:web:18bcf5560098dd6f6fa449"
 };
 
-
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore();
+const db = getFirestore(app);
 
 export { db };

@@ -1,6 +1,4 @@
-        import { FirestoreService } from './Modules/NoSQL/firestore_service.js';
-
-
+        import { FirestoreService } from '../Modules/NoSQL/firestore_service.js';
 
         const firestore = new FirestoreService("estudiantes");
 

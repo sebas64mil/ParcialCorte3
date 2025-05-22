@@ -1,38 +1,48 @@
-import { db } from '../../Modules/NoSQL/firebase_init.js';
-
+import { db } from './firebase_init.js';
+import { collection, getDocs, getDoc, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 export class FirestoreService {
-  constructor(collectionName) {
-    this.collectionRef = db.collection(collectionName);
+  constructor(collectionName, documentId) {
+    this.collectionTeams = collection(db, collectionName);
+   
+  }
+
+  alert(message) {
+    alert(message);
   }
 
   async getAllDocuments() {
-    const snapshot = await this.collectionRef.get();
+    const snapshot = await getDocs(this.collectionTeams);
     const data = [];
     snapshot.forEach((doc) => {
       data.push({ id: doc.id, ...doc.data() });
+
     });
     return data;
   }
 
   async getDocumentById(id) {
-    const docRef = this.collectionRef.doc(id);
-    const snapshot = await docRef.get();
-
-    if (snapshot.exists) {
+    const docRef = doc(this.collectionTeams, id);
+    const snapshot = await getDoc(docRef);
+  
+    if (snapshot.exists()) {
       return { id: snapshot.id, ...snapshot.data() };
     } else {
-      return null;
+      return null; 
     }
   }
 
-  async postDocument(customId, dataObject) {
+  async PostDocument(customId, dataObject) {
     try {
-      const docRef = this.collectionRef.doc(customId.toString());
-      await docRef.set(dataObject);
+      console.log(customId, dataObject);
+      const docRef = doc(this.collectionTeams, customId.toString());
+      await setDoc(docRef, dataObject);
       console.log("Documento creado con ID:", customId);
     } catch (e) {
       console.error("Error al crear el documento:", e);
     }
   }
+
+
+  
 }
